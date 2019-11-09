@@ -1,6 +1,8 @@
 import React from "react";
 import Head from "next/head";
-import Link from "next/link";
+import Header from './header';
+
+import Firebase, { FirebaseContext } from './fire';
 
 class Layout extends React.Component {
     constructor(props) {
@@ -18,39 +20,31 @@ class Layout extends React.Component {
         const { children } = this.props;
         const title = "Welcome to Nextjs";
         return (
-            <div>
-                <Head>
-                    <title>{title}</title>
-                    <meta charSet="utf-8" />
-                    <meta
-                        name="viewport"
-                        content="initial-scale=1.0, width=device-width"
-                    />
-                </Head>
-                <header>
-                    <style jsx>
+            <FirebaseContext.Provider value={new Firebase()}>
+                <div>
+                    <Head>
+                        <title>{title}</title>
+                        <meta charSet="utf-8" />
+                        <meta
+                            name="viewport"
+                            content="initial-scale=1.0, width=device-width"
+                        />
+                    </Head>
+                    <Header />
+                    <div className="main">{children}</div>
+                    <style jsx global>
                         {`
-              a {
-                color: red;
-              }
-            `}
-                    </style>
-                    <ul className="navbar navbar-dark bg-dark">
-                        <li>
-                            <Link href="/">
-                                <a className="navbar-brand">Hem</a>
-                            </Link>
-                        </li>
+                    body {
+                        margin: 0;
+                    }
 
-                        <li className="ml-auto">
-                            <Link href="/tillbehor">
-                                <a className="nav-link">Tillbehör</a>
-                            </Link>
-                        </li>
-                    </ul>
-                </header>
-                <div>{children}</div>
-            </div>
+                    .main {
+                        padding: 15px;
+                    }                        
+                `}
+                    </style>
+                </div>
+            </FirebaseContext.Provider>
         );
     }
 }
